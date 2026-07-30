@@ -21,8 +21,12 @@
   page and the app look like the same company.
 -->
 
-<title>AnswerWeave &mdash; AI chat that answers from your own website</title>
-<meta name="description" content="AnswerWeave reads your pages and documents, answers visitors from what it actually found, and shows them the source. When it does not know, it says so. Launching soon.">
+<!-- 49 chars rendered. Under the ~57 SERP truncation point, and "trained on your own
+     website" is the phrasing buyers actually search - see the category language in
+     docs/orchestration/specs. -->
+<title>AnswerWeave &mdash; AI chat trained on your own website</title>
+<!-- 140 chars. The previous 167 truncated mid-sentence in results. -->
+<meta name="description" content="AnswerWeave answers your visitors from your own pages and documents, and cites the source. When it does not know, it says so. Launching soon.">
 <link rel="canonical" href="https://answerweave.ai/">
 <meta name="robots" content="index, follow, max-image-preview:large">
 <meta name="theme-color" content="#f8f9fb" media="(prefers-color-scheme: light)">
@@ -31,23 +35,98 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="AnswerWeave">
 <meta property="og:url" content="https://answerweave.ai/">
-<meta property="og:title" content="AnswerWeave &mdash; AI chat that answers from your own website">
-<meta property="og:description" content="Reads your pages and documents, answers visitors from what it actually found, and shows them the source. When it does not know, it says so.">
+<meta property="og:title" content="AnswerWeave &mdash; AI chat trained on your own website">
+<meta property="og:description" content="Answers your visitors from your own pages and documents, and cites the source. When it does not know, it says so.">
+
+<!-- CRITICAL, and previously missing. twitter:card was declared summary_large_image
+     with no image supplied, so every share on LinkedIn, X, Slack and iMessage rendered
+     as a bare text card. Absolute URLs are required - relative ones are ignored by
+     every major crawler. -->
+<meta property="og:image" content="https://answerweave.ai/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="AnswerWeave &mdash; AI chat that answers from your own website. Cites its sources.">
+<meta name="twitter:image" content="https://answerweave.ai/og.png">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="AnswerWeave &mdash; AI chat that answers from your own website">
-<meta name="twitter:description" content="Reads your pages and documents, answers visitors from what it actually found, and shows them the source.">
+<meta name="twitter:title" content="AnswerWeave &mdash; AI chat trained on your own website">
+<meta name="twitter:description" content="Answers your visitors from your own pages and documents, and cites the source.">
 
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='11' fill='%237c5cff'/></svg>">
 
+<!--
+  Three graphs. FAQPage MUST mirror the visible FAQ below word for word - Google
+  penalises schema describing content a visitor cannot see, and there is no upside
+  to marking up anything that is not on the page.
+
+  No `offers` node: pricing is not public yet, and inventing one to win a rich result
+  is exactly the kind of thing that gets structured data ignored site-wide.
+-->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
-  "name": "AnswerWeave",
-  "applicationCategory": "BusinessApplication",
-  "url": "https://answerweave.ai/",
-  "description": "An embeddable AI chat assistant that answers website visitors from the site's own pages and documents, cites its sources, and captures qualified leads.",
-  "operatingSystem": "Web"
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://answerweave.ai/#organization",
+      "name": "AnswerWeave",
+      "url": "https://answerweave.ai/",
+      "description": "AnswerWeave builds an embeddable AI chat assistant that answers website visitors from the site's own content and cites its sources."
+    },
+    {
+      "@type": "SoftwareApplication",
+      "name": "AnswerWeave",
+      "applicationCategory": "BusinessApplication",
+      "url": "https://answerweave.ai/",
+      "description": "An embeddable AI chat assistant that answers website visitors from the site's own pages and documents, cites its sources, and captures qualified leads.",
+      "operatingSystem": "Web",
+      "publisher": { "@id": "https://answerweave.ai/#organization" }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What does AnswerWeave do?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "It adds a chat assistant to your website that answers visitors' questions using your own content, rather than general knowledge from the open internet."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Where do the answers come from?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "From material you give it: a crawl of your site, a sitemap, a list of URLs, or uploaded PDFs, Word files, Markdown and plain text. Every answer links back to the page it came from, so a visitor can check it."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What happens when it does not know the answer?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "It says so. Each answer carries a confidence score, and below a threshold the assistant declines and offers a human instead of inventing something plausible. A confident wrong answer costs more than no answer."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How is it installed?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "One script tag in your page. No plugin, no rebuild, and no framework requirements - it works the same on WordPress, a static site or a single-page app."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does it do anything besides answer questions?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "It captures contact details in the flow of the conversation and writes a short brief on what the visitor was actually asking about, so follow-up starts warm rather than cold."
+          }
+        }
+      ]
+    }
+  ]
 }
 </script>
 
@@ -159,6 +238,13 @@
   }
   pre .tag { color: rgb(var(--accent-text)); }
 
+  /* --- FAQ --- */
+  .faq { margin-top: 4.5rem; }
+  .faq > h2 { font-size: .975rem; font-weight: 640; margin: 0 0 1rem; letter-spacing: -.01em; }
+  .qa { border-top: 1px solid rgb(var(--border)); padding: 1.1rem 0; }
+  .qa h3 { margin: 0 0 .35rem; font-size: .9rem; font-weight: 620; letter-spacing: -.005em; }
+  .qa p { margin: 0; color: rgb(var(--ink-secondary)); font-size: .875rem; max-width: 46rem; }
+
   footer {
     margin-top: 4.5rem; padding-top: 1.5rem; border-top: 1px solid rgb(var(--border));
     display: flex; flex-wrap: wrap; gap: .5rem 1.5rem; align-items: center;
@@ -231,6 +317,57 @@
   data-bot-id="&hellip;"
   data-api-key="&hellip;"<span class="tag">&gt;&lt;/script&gt;</span></pre>
   </div>
+
+  <!--
+    Every question and answer below is duplicated verbatim in the FAQPage graph above.
+    If you edit one, edit both - schema that does not match visible content is worse
+    than no schema at all.
+  -->
+  <section class="faq">
+    <h2>Questions</h2>
+
+    <div class="qa">
+      <h3>What does AnswerWeave do?</h3>
+      <p>
+        It adds a chat assistant to your website that answers visitors&rsquo; questions using your
+        own content, rather than general knowledge from the open internet.
+      </p>
+    </div>
+
+    <div class="qa">
+      <h3>Where do the answers come from?</h3>
+      <p>
+        From material you give it: a crawl of your site, a sitemap, a list of URLs, or uploaded
+        PDFs, Word files, Markdown and plain text. Every answer links back to the page it came
+        from, so a visitor can check it.
+      </p>
+    </div>
+
+    <div class="qa">
+      <h3>What happens when it does not know the answer?</h3>
+      <p>
+        It says so. Each answer carries a confidence score, and below a threshold the assistant
+        declines and offers a human instead of inventing something plausible. A confident wrong
+        answer costs more than no answer.
+      </p>
+    </div>
+
+    <div class="qa">
+      <h3>How is it installed?</h3>
+      <p>
+        One script tag in your page. No plugin, no rebuild, and no framework requirements &mdash;
+        it works the same on WordPress, a static site or a single-page app.
+      </p>
+    </div>
+
+    <div class="qa">
+      <h3>Does it do anything besides answer questions?</h3>
+      <p>
+        It captures contact details in the flow of the conversation and writes a short brief on
+        what the visitor was actually asking about, so follow-up starts warm rather than cold.
+      </p>
+    </div>
+  </section>
 
   <footer>
     <span>AnswerWeave</span>
