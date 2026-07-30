@@ -1,0 +1,6 @@
+# The apex is the only host on answerweave.ai that should be indexed.
+# app. / sandbox. / qa. all send X-Robots-Tag: noindex, nofollow at the edge.
+User-agent: *
+Allow: /
+
+Sitemap: https://answerweave.ai/sitemap.xml

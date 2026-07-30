@@ -1,104 +1,241 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <!--
-  Temporary holding page for the answerweave.ai apex.
+  Holding page for the answerweave.ai apex.
 
-  WHY THIS IS INDEXABLE, deliberately:
-  A GoDaddy parking page on your canonical brand domain is worse than nothing â€” it is
-  ad-supported, it is not yours, and it can be indexed as "AnswerWeave". One clean branded
-  page instead starts establishing the domain for the brand name before launch, and is
-  replaced rather than competed with when the real site ships.
+  DELIBERATELY INDEXABLE. Every other host on this domain (app., sandbox., qa.) sends
+  X-Robots-Tag: noindex, nofollow at the edge. This page is the single exception: one
+  clean branded page starts establishing the domain for the brand name before launch,
+  and is replaced by the real homepage rather than competing with it.
 
-  Everything ELSE on answerweave.ai â€” app., sandbox., qa. â€” is noindex at the Caddy edge.
-  This page is the single exception, and that is the whole point.
+  NO RAW NON-ASCII. Typographic characters are HTML entities (&mdash; &rsquo; &hellip;)
+  on purpose. An earlier revision was corrupted into mojibake by a tool that read UTF-8
+  as Windows-1252 and re-encoded it. Entities survive any such round trip.
 
-  NOT deployed to the production VM. See README.md in this directory for why.
+  Self-contained: no external requests, no webfonts, no analytics. Colours are the
+  product's own design tokens, copied from apps/dashboard/src/app/globals.css so this
+  page and the app look like the same company.
 -->
 
-<title>AnswerWeave â€” AI chat assistant for your website</title>
-<meta name="description" content="AnswerWeave answers your visitors' questions from your own website content, and captures leads while it does it. Launching soon.">
+<title>AnswerWeave &mdash; AI chat that answers from your own website</title>
+<meta name="description" content="AnswerWeave reads your pages and documents, answers visitors from what it actually found, and shows them the source. When it does not know, it says so. Launching soon.">
 <link rel="canonical" href="https://answerweave.ai/">
-<meta name="robots" content="index, follow">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="theme-color" content="#f8f9fb" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0e1015" media="(prefers-color-scheme: dark)">
 
 <meta property="og:type" content="website">
+<meta property="og:site_name" content="AnswerWeave">
 <meta property="og:url" content="https://answerweave.ai/">
-<meta property="og:title" content="AnswerWeave â€” AI chat assistant for your website">
-<meta property="og:description" content="AnswerWeave answers your visitors' questions from your own website content, and captures leads while it does it. Launching soon.">
+<meta property="og:title" content="AnswerWeave &mdash; AI chat that answers from your own website">
+<meta property="og:description" content="Reads your pages and documents, answers visitors from what it actually found, and shows them the source. When it does not know, it says so.">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AnswerWeave &mdash; AI chat that answers from your own website">
+<meta name="twitter:description" content="Reads your pages and documents, answers visitors from what it actually found, and shows them the source.">
+
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='11' fill='%237c5cff'/></svg>">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "AnswerWeave",
+  "applicationCategory": "BusinessApplication",
+  "url": "https://answerweave.ai/",
+  "description": "An embeddable AI chat assistant that answers website visitors from the site's own pages and documents, cites its sources, and captures qualified leads.",
+  "operatingSystem": "Web"
+}
+</script>
 
 <style>
+  /* Design tokens lifted verbatim from the product (globals.css). */
   :root {
-    --bg: #ffffff;
-    --ink: #0d0f14;
-    --muted: #5b6273;
-    --line: #e6e8ee;
-    --accent: #4f46e5;
+    --canvas: 248 249 251;  --surface: 255 255 255;  --border: 228 231 237;
+    --ink-primary: 15 17 23;  --ink-secondary: 90 97 114;  --ink-muted: 155 163 178;
+    --accent-subtle: 238 242 255;  --accent-text: 67 56 202;
+    --accent: #3730a3;  --electric: #7c5cff;
+    --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / .06), 0 1px 2px -1px rgb(0 0 0 / .04);
+    --shadow-float: 0 8px 24px -4px rgb(0 0 0 / .12), 0 4px 8px -2px rgb(0 0 0 / .06);
   }
   @media (prefers-color-scheme: dark) {
     :root {
-      --bg: #0b0d12;
-      --ink: #f2f4f8;
-      --muted: #9aa2b5;
-      --line: #1e2230;
-      --accent: #8b85ff;
+      --canvas: 14 16 21;  --surface: 22 25 33;  --border: 39 43 55;
+      --ink-primary: 241 243 247;  --ink-secondary: 167 174 188;  --ink-muted: 110 117 132;
+      --accent-subtle: 40 36 80;  --accent-text: 165 180 252;
+      --accent: #6d63e8;  --electric: #8b85ff;
+      --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / .4);
+      --shadow-float: 0 8px 24px -4px rgb(0 0 0 / .5);
     }
   }
+
   * { box-sizing: border-box; }
-  html, body { height: 100%; }
   body {
     margin: 0;
-    background: var(--bg);
-    color: var(--ink);
-    font: 16px/1.6 ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: rgb(var(--canvas));
+    color: rgb(var(--ink-primary));
+    font: 15px/1.6 ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
-    display: grid;
-    place-items: center;
-    padding: 2rem 1.25rem;
   }
-  main { width: 100%; max-width: 34rem; }
-  .mark {
-    display: inline-flex; align-items: center; gap: .6rem;
-    font-weight: 650; letter-spacing: -0.01em; font-size: 1.05rem;
-  }
-  .dot {
-    width: .6rem; height: .6rem; border-radius: 50%;
-    background: var(--accent); flex: none;
-  }
+  .wrap { max-width: 62rem; margin: 0 auto; padding: 4rem 1.5rem 5rem; }
+
+  .brand { display: inline-flex; align-items: center; gap: .55rem; font-weight: 650; letter-spacing: -.01em; }
+  .brand .dot { width: .58rem; height: .58rem; border-radius: 50%; background: var(--electric); flex: none; }
+
+  .hero { display: grid; gap: 3rem; align-items: center; margin-top: 3.5rem; }
+  @media (min-width: 62rem) { .hero { grid-template-columns: 1.05fr .95fr; gap: 4rem; } }
+
   h1 {
-    margin: 2rem 0 0;
-    font-size: clamp(1.9rem, 5vw, 2.6rem);
-    line-height: 1.15;
-    letter-spacing: -0.025em;
-    font-weight: 680;
+    margin: 0;
+    font-size: clamp(2rem, 5.2vw, 3.05rem);
+    line-height: 1.08; letter-spacing: -.031em; font-weight: 680;
   }
-  p.lede { margin: 1rem 0 0; color: var(--muted); font-size: 1.05rem; }
-  hr { margin: 2.5rem 0 1.25rem; border: 0; border-top: 1px solid var(--line); }
-  .foot { display: flex; flex-wrap: wrap; gap: .5rem 1.5rem; color: var(--muted); font-size: .9rem; }
-  a { color: var(--accent); text-decoration: none; }
-  a:hover { text-decoration: underline; }
-  a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 3px; }
+  .lede { margin: 1.15rem 0 0; color: rgb(var(--ink-secondary)); font-size: 1.06rem; max-width: 34rem; }
+
+  .pill {
+    display: inline-flex; align-items: center; gap: .45rem;
+    margin-bottom: 1.35rem; padding: .3rem .7rem .3rem .55rem;
+    border-radius: 9999px; background: rgb(var(--accent-subtle));
+    color: rgb(var(--accent-text)); font-size: .78rem; font-weight: 600;
+    letter-spacing: .01em;
+  }
+  .pill .spark { width: .4rem; height: .4rem; border-radius: 50%; background: currentColor; }
+
+  /* --- Product mock: the widget, drawn in CSS. No screenshot to go stale. --- */
+  .mock {
+    background: rgb(var(--surface)); border: 1px solid rgb(var(--border));
+    border-radius: 12px; box-shadow: var(--shadow-float); overflow: hidden;
+  }
+  .mock-bar {
+    display: flex; align-items: center; gap: .5rem;
+    padding: .7rem .9rem; border-bottom: 1px solid rgb(var(--border));
+    font-size: .82rem; font-weight: 600; color: rgb(var(--ink-secondary));
+  }
+  .mock-body { padding: 1.1rem .9rem 1.2rem; display: grid; gap: .75rem; }
+  .msg { max-width: 88%; padding: .6rem .8rem; border-radius: 10px; font-size: .875rem; }
+  .msg.from-visitor { justify-self: end; background: var(--accent); color: #fff; border-bottom-right-radius: 4px; }
+  .msg.from-bot { justify-self: start; background: rgb(var(--canvas)); border: 1px solid rgb(var(--border)); border-bottom-left-radius: 4px; }
+  .cite {
+    display: inline-flex; align-items: center; gap: .3rem; margin-top: .5rem;
+    padding: .18rem .45rem; border-radius: 6px;
+    background: rgb(var(--accent-subtle)); color: rgb(var(--accent-text));
+    font-size: .72rem; font-weight: 600;
+  }
+  .typing { display: inline-flex; gap: .22rem; padding: .1rem 0; }
+  .typing i { width: .3rem; height: .3rem; border-radius: 50%; background: rgb(var(--ink-muted)); animation: blink 1.3s infinite; }
+  .typing i:nth-child(2) { animation-delay: .18s; }
+  .typing i:nth-child(3) { animation-delay: .36s; }
+  @keyframes blink { 0%,60%,100% { opacity: .28 } 30% { opacity: 1 } }
+  @media (prefers-reduced-motion: reduce) { .typing i { animation: none; opacity: .5 } }
+
+  /* --- Feature cards --- */
+  .features { display: grid; gap: 1rem; margin-top: 4.5rem; }
+  @media (min-width: 46rem) { .features { grid-template-columns: repeat(3, 1fr); } }
+  .card {
+    background: rgb(var(--surface)); border: 1px solid rgb(var(--border));
+    border-radius: 10px; padding: 1.25rem; box-shadow: var(--shadow-sm);
+  }
+  .card h2 { margin: .1rem 0 .45rem; font-size: .975rem; font-weight: 640; letter-spacing: -.01em; }
+  .card p { margin: 0; color: rgb(var(--ink-secondary)); font-size: .875rem; }
+  .glyph {
+    width: 1.9rem; height: 1.9rem; border-radius: 8px; display: grid; place-items: center;
+    background: rgb(var(--accent-subtle)); color: rgb(var(--accent-text));
+    font-size: .95rem; font-weight: 700;
+  }
+
+  /* --- Install --- */
+  .install { margin-top: 4rem; }
+  .install h2 { font-size: .975rem; font-weight: 640; margin: 0 0 .2rem; letter-spacing: -.01em; }
+  .install p { margin: 0 0 .8rem; color: rgb(var(--ink-secondary)); font-size: .875rem; }
+  pre {
+    margin: 0; padding: 1rem 1.1rem; overflow-x: auto;
+    background: rgb(var(--surface)); border: 1px solid rgb(var(--border));
+    border-radius: 10px; box-shadow: var(--shadow-sm);
+    font: 500 .8rem/1.65 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    color: rgb(var(--ink-secondary));
+  }
+  pre .tag { color: rgb(var(--accent-text)); }
+
+  footer {
+    margin-top: 4.5rem; padding-top: 1.5rem; border-top: 1px solid rgb(var(--border));
+    display: flex; flex-wrap: wrap; gap: .5rem 1.5rem; align-items: center;
+    color: rgb(var(--ink-muted)); font-size: .82rem;
+  }
 </style>
 </head>
 <body>
-<main>
-  <span class="mark"><span class="dot" aria-hidden="true"></span>AnswerWeave</span>
+<div class="wrap">
+  <span class="brand"><span class="dot" aria-hidden="true"></span>AnswerWeave</span>
 
-  <h1>An AI assistant that actually knows your website.</h1>
+  <div class="hero">
+    <div>
+      <span class="pill"><span class="spark" aria-hidden="true"></span>Launching soon</span>
+      <h1>The chat assistant that reads your site first.</h1>
+      <p class="lede">
+        AnswerWeave crawls your pages and documents, answers visitors from what it actually
+        found, and shows them where each answer came from. When it does not know, it says so
+        &mdash; instead of inventing something plausible.
+      </p>
+    </div>
 
-  <p class="lede">
-    AnswerWeave reads your site, then answers your visitors' questions from it â€” and captures
-    the leads worth following up. We're putting the finishing touches on the public site.
-  </p>
-
-  <hr>
-
-  <div class="foot">
-    <span>Launching soon</span>
+    <div class="mock" role="img" aria-label="Example chat: a visitor asks about the refund policy and AnswerWeave answers, citing the refunds page as its source.">
+      <div class="mock-bar"><span class="dot" style="width:.5rem;height:.5rem;border-radius:50%;background:var(--electric);display:inline-block" aria-hidden="true"></span>Ask us anything</div>
+      <div class="mock-body">
+        <div class="msg from-visitor">What&rsquo;s your refund policy on annual plans?</div>
+        <div class="msg from-bot">
+          Annual plans can be refunded in full within 30 days of purchase. After that, we
+          pro-rate the unused months back to your original payment method.
+          <br><span class="cite">&#8599; policies / refunds</span>
+        </div>
+        <div class="msg from-bot" style="padding:.5rem .8rem">
+          <span class="typing" aria-hidden="true"><i></i><i></i><i></i></span>
+        </div>
+      </div>
+    </div>
   </div>
-</main>
+
+  <div class="features">
+    <div class="card">
+      <div class="glyph" aria-hidden="true">1</div>
+      <h2>Grounded in your content</h2>
+      <p>
+        Point it at a site, a sitemap or a list of URLs. Add PDFs, Word files and Markdown.
+        Every answer is drawn from those, with a link back to the page it came from.
+      </p>
+    </div>
+    <div class="card">
+      <div class="glyph" aria-hidden="true">2</div>
+      <h2>It admits what it doesn&rsquo;t know</h2>
+      <p>
+        Answers carry a confidence score. Below the threshold it declines and offers a human
+        instead. A confident wrong answer costs more than no answer.
+      </p>
+    </div>
+    <div class="card">
+      <div class="glyph" aria-hidden="true">3</div>
+      <h2>Conversations become leads</h2>
+      <p>
+        It captures contact details in context and writes a short brief on what the visitor
+        was actually after, so follow-up starts warm rather than cold.
+      </p>
+    </div>
+  </div>
+
+  <div class="install">
+    <h2>One script tag</h2>
+    <p>No plugin, no rebuild, no framework requirements. Paste it once and it is live.</p>
+<pre><span class="tag">&lt;script</span> src="https://&hellip;/widget.js"
+  data-bot-id="&hellip;"
+  data-api-key="&hellip;"<span class="tag">&gt;&lt;/script&gt;</span></pre>
+  </div>
+
+  <footer>
+    <span>AnswerWeave</span>
+    <span>Launching soon</span>
+  </footer>
+</div>
 </body>
 </html>
